@@ -1,23 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import UserTable from './Components/Table/Table';
+import Button from '@mui/material/Button';
+import { useState, useEffect } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 
 function App() {
+
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res =>  res.json())
+    .then(data => setContacts(data))  
+  },[])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <h1>Your contacts</h1>
+      <UserTable contacts={contacts} setContacts={setContacts} />
+    <Link to="add_phone"><Button variant="contained">Add contact</Button></Link>
+    <Outlet context={[contacts, setContacts]} />
     </div>
   );
 }
