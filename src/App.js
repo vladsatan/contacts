@@ -1,12 +1,13 @@
 import './App.css';
-import UserTable from './Components/Table/Table';
+import UserTable from './Components/UserTable/UserTable';
 import Button from '@mui/material/Button';
 import { useState, useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import AddPhone from './Components/AddPhone/AddPhone';
 
 function App() {
 
   const [contacts, setContacts] = useState([]);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -18,8 +19,9 @@ function App() {
     <div className="App">
     <h1>Your contacts</h1>
       <UserTable contacts={contacts} setContacts={setContacts} />
-    <Link to="add_phone"><Button variant="contained">Add contact</Button></Link>
-    <Outlet context={[contacts, setContacts]} />
+      <Button variant="contained" onClick={()=> setIsOpenPopup(true)}>Add contact</Button>
+
+      {isOpenPopup? <AddPhone contacts={contacts} setContacts={setContacts} setIsOpenPopup={setIsOpenPopup} /> : null}
     </div>
   );
 }
